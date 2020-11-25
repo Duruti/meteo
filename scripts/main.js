@@ -80,6 +80,7 @@ function connect(){
    });
 }
 function today(hourly){
+   hours = new Date().getHours();
    let today = document.querySelector('.today')
    today.innerHTML = ""
    let time = hours
@@ -104,6 +105,7 @@ function today(hourly){
 }
 
 function initDays(daily){
+   day = new Date().getDay();
    let days = document.querySelector('.days')
    days.innerHTML = ""
    day += 1;
