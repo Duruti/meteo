@@ -36,8 +36,9 @@ if (navigator.geolocation){
       lat = position.coords.latitude;
       lon = position.coords.longitude;
     //  console.dir(lat)
+    title.innerText = `${lat} et ${lon}`
       console.dir(position)
-      start()
+      //start()
       },
       ()=>alert("Vous avez désactivé la geolocalisation, vous ne pourrez pas utiliser la position de votre appareil")
        )
@@ -75,6 +76,7 @@ function searchGPS(){
    })
    .catch(error =>{
       console.log('Il y a eu un putain problème avec l\'opération fetch: ' + error.message);
+      title.innerText= `Error`
       console.dir(error)})
 }
 function searchMap(city){
