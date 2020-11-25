@@ -29,6 +29,8 @@ form.addEventListener('submit',(e)=>{
 })
 connect()
 //
+// today()
+// initDays()
 
 function searchMap(city){
    fetch(`https://api-adresse.data.gouv.fr/search/?q=${city}`)
@@ -41,7 +43,7 @@ function searchMap(city){
       lat = d.geometry.coordinates[1];
       lon = d.geometry.coordinates[0];
       title.innerText= `Météo à ${nameCity}`
-      //console.log(data)
+      console.log(data)
       console.log(`
       ${nameCity}, departement ${cityContext}, avec ${population} habitants
       `)
@@ -79,20 +81,23 @@ function connect(){
 function today(hourly){
    let today = document.querySelector('.today')
    let time = hours
-   for (let i=0 ; i<(24) ;i+=2){
-      let tempMin = hourly[i].temp.min
+   const stepHour = 3
+   for (let i=0 ; i<(24) ;i+=stepHour){
+      let temp = Math.trunc(hourly[i].temp)
       let icons = ['01d','02d','03d','04d','09d','10d','11d','50d']
       let v = `<div class="cardDay">
                   <div class="day">${time} H</div>
                   <div class="dayWeather logo"></div>
-                  <div class="tempMin">${Math.trunc(hourly[i].temp)}°</div>
+                  <div class="tempMin">${temp}°</div>
                </div>`
       today.insertAdjacentHTML('beforeend',v);
-      time += 2
+      time += stepHour
       if (time>24) time=time-24;
       if (time===24) time = 0
       // logo
-      today.lastChild.children[1].style.backgroundImage = `url(ressources/jour/${hourly[i].weather[0].icon}.svg)`
+      let path = hourly[i].weather[0].icon
+
+      today.lastChild.children[1].style.backgroundImage = `url(ressources/jour/${path}.svg)`
    }
 }
 
@@ -112,6 +117,7 @@ function initDays(daily){
       day += 1
       if (day>6) day=0;
       // logo
-      days.lastChild.children[1].style.backgroundImage = `url(ressources/jour/${daily[i].weather[0].icon}.svg)`
+      let path = daily[i].weather[0].icon
+      days.lastChild.children[1].style.backgroundImage = `url(ressources/jour/${path}.svg)`
    }
 }
