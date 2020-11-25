@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Meteo a Desges</h1>
+    <h1 class="title">Meteo a Desges</h1>
+    <form id="form">
+        <input type="text" class="inputAdresse">
+        <button class="submit">Envoyer</button>
+    </form>
     <div class="card">
         <div class="meteo">
             <p class="ciel">Soleil</p>
@@ -18,10 +22,19 @@
             <p class="hours"></p>
             <p class="temp"></p>
         </div>
+       
     </div>
-
+    <div id="today">
+        <h2>Today</h2>
+        <div class="today"></div>
+    </div>
+    </div>
+    <div id="week">
+        <h2>This week</h2>
+        <div class="days"></div>
+    </div>
     </p>
-   
+  
     <script type="module" src="scripts/main.js"></script>
 </body>
 </html>

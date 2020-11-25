@@ -3,14 +3,55 @@ const KEYAPI = '91d441805ebfaedeb9e8e538894bc254';
 let lat = 44.97 //47.50;
 let lon = 3.45 //6.86;
 let date = new Date();
+let day = new Date().getDay();
+const week= ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi']
 let hours = new Date().getHours();
 var options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-date = date.toLocaleDateString('fr-FR', options)
+date = date.toLocaleDateString('fr-FR', options);
 let dataMeteo
- connect()
-//  let iconPath = `ressources/jour/01d.svg`
-//  let logo = document.querySelector('.logo');
-//  logo.style.backgroundImage =`url(${iconPath})`
+// connect()
+ let iconPath = `ressources/jour/01d.svg`
+ let logo = document.querySelector('.logo');
+ logo.style.backgroundImage =`url(${iconPath})`
+
+let input = document.querySelector('.inputAdresse')
+let title = document.querySelector('.title')
+let form = document.querySelector('#form')
+let nameCity ="";
+let population,cityContext
+
+console.log(title.classList.contains('title'));
+form.addEventListener('submit',(e)=>{
+   e.preventDefault()
+   console.dir(input.value)
+   searchMap(input.value)
+  
+})
+connect()
+//
+
+function searchMap(city){
+   fetch(`https://api-adresse.data.gouv.fr/search/?q=${city}`)
+   .then(r => r.json())
+   .then(data =>{
+      let d = data.features[0]
+      nameCity = d.properties.city
+      cityContext = d.properties.context
+      population = d.properties.population
+      lat = d.geometry.coordinates[1];
+      lon = d.geometry.coordinates[0];
+      title.innerText= `Météo à ${nameCity}`
+      //console.log(data)
+      console.log(`
+      ${nameCity}, departement ${cityContext}, avec ${population} habitants
+      `)
+     // connect();
+   })
+   .catch(error =>{
+      console.log('Il y a eu un problème avec l\'opération fetch: ' + error.message);
+      console.dir(error)})
+
+}
 
 function connect(){
    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=fr&appid=${KEYAPI}&exclude=minutely`)
@@ -30,6 +71,47 @@ function connect(){
       let logo = document.querySelector('.logo');
       logo.style.backgroundImage =`url(${iconPath})`
 
-      console.log(logo)
+      console.dir(data)
+      today(data.hourly)
+      initDays(data.daily)
    });
+}
+function today(hourly){
+   let today = document.querySelector('.today')
+   let time = hours
+   for (let i=0 ; i<(24) ;i+=2){
+      let tempMin = hourly[i].temp.min
+      let icons = ['01d','02d','03d','04d','09d','10d','11d','50d']
+      let v = `<div class="cardDay">
+                  <div class="day">${time} H</div>
+                  <div class="dayWeather logo"></div>
+                  <div class="tempMin">${Math.trunc(hourly[i].temp)}°</div>
+               </div>`
+      today.insertAdjacentHTML('beforeend',v);
+      time += 2
+      if (time>24) time=time-24;
+      if (time===24) time = 0
+      // logo
+      today.lastChild.children[1].style.backgroundImage = `url(ressources/jour/${hourly[i].weather[0].icon}.svg)`
+   }
+}
+
+function initDays(daily){
+   let days = document.querySelector('.days')
+   day += 1;
+   if (day>6) day=0;
+   for (let i=1 ; i<8 ;i++){
+      let tempMin = daily[i].temp.min
+      let icons = ['01d','02d','03d','04d','09d','10d','11d','50d']
+      let v = `<div class="cardDay">
+      <div class="day">${week[day]}</div>
+      <div class="dayWeather logo"></div>
+      <div class="tempMin">min: ${Math.trunc(tempMin)}°</div>
+      </div>`
+      days.insertAdjacentHTML('beforeend',v);
+      day += 1
+      if (day>6) day=0;
+      // logo
+      days.lastChild.children[1].style.backgroundImage = `url(ressources/jour/${daily[i].weather[0].icon}.svg)`
+   }
 }
