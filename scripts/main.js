@@ -1,3 +1,6 @@
+let debug = false;
+
+
 // https://home.openweathermap.org/
 const KEYAPI = '91d441805ebfaedeb9e8e538894bc254';
 let lat = 44.97 //47.50;
@@ -27,11 +30,53 @@ form.addEventListener('submit',(e)=>{
    searchMap(input.value)
   
 })
-connect()
-//
-// today()
-// initDays()
 
+if (navigator.geolocation){
+   navigator.geolocation.getCurrentPosition(position =>{
+      lat = position.coords.latitude;
+      lon = position.coords.longitude;
+    //  console.dir(lat)
+      console.dir(position)
+      start()
+      },
+      ()=>alert("Vous avez désactivé la geolocalisation, vous ne pourrez pas utiliser la position de votre appareil")
+       )
+}
+
+function start(){
+
+   debug ? init():searchGPS()
+}
+//connect()
+//
+function init(){
+   today()
+   initDays()
+}
+function searchGPS(){
+  console.log(lon,lat)
+    fetch(`https://api-adresse.data.gouv.fr/reverse/?lon=${lon}&lat=${lat}`)
+  // fetch("https://api-adresse.data.gouv.fr/reverse/?lon=2.37&lat=48.357")
+   .then(r => r.json())
+   .then(data =>{
+      let d = data.features[0]
+      nameCity = d.properties.city
+      cityContext = d.properties.context
+      population = d.properties.population
+      lat = d.geometry.coordinates[1];
+      lon = d.geometry.coordinates[0];
+      title.innerText= `Météo à ${nameCity}`
+      console.log("Ville :")
+      console.dir(data)
+      console.log(`
+      ${nameCity}, departement ${cityContext}, avec ${population} habitants
+      `)
+      connect();
+   })
+   .catch(error =>{
+      console.log('Il y a eu un putain problème avec l\'opération fetch: ' + error.message);
+      console.dir(error)})
+}
 function searchMap(city){
    fetch(`https://api-adresse.data.gouv.fr/search/?q=${city}`)
    .then(r => r.json())
@@ -86,7 +131,7 @@ function today(hourly){
    let time = hours
    const stepHour = 3
    for (let i=0 ; i<(24) ;i+=stepHour){
-      let temp = Math.trunc(hourly[i].temp)
+      let temp = debug? i:Math.trunc(hourly[i].temp)
       let icons = ['01d','02d','03d','04d','09d','10d','11d','50d']
       let v = `<div class="cardDay">
                   <div class="day">${time} H</div>
@@ -98,7 +143,7 @@ function today(hourly){
       if (time>24) time=time-24;
       if (time===24) time = 0
       // logo
-      let path = hourly[i].weather[0].icon
+      let path = debug? '01d':hourly[i].weather[0].icon
 
       today.lastChild.children[1].style.backgroundImage = `url(ressources/jour/${path}.svg)`
    }
@@ -111,7 +156,7 @@ function initDays(daily){
    day += 1;
    if (day>6) day=0;
    for (let i=1 ; i<8 ;i++){
-      let tempMin = daily[i].temp.min
+      let tempMin = debug? i:daily[i].temp.min
       let icons = ['01d','02d','03d','04d','09d','10d','11d','50d']
       let v = `<div class="cardDay">
       <div class="day">${week[day]}</div>
@@ -122,7 +167,7 @@ function initDays(daily){
       day += 1
       if (day>6) day=0;
       // logo
-      let path = daily[i].weather[0].icon
+      let path = debug? '02d':daily[i].weather[0].icon
       days.lastChild.children[1].style.backgroundImage = `url(ressources/jour/${path}.svg)`
    }
 }

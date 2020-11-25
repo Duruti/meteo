@@ -23,40 +23,45 @@ body {
     align-items: center;
 }
 .inputAdresse{
-    width: 50vw;
+    width: 40vw;
+    font-size: 1.5vw;       
     outline: 0;
+    border: 0;
     padding: 10px;
-    font-size: 4vw;       
-    border-radius: 5px ;
+    border-radius: 10px ;
 
 }
 .submit{
     outline: 0;
-    font-size: 4vw;
+    border: 0;
+    font-size: 1.5vw;
 
-    border-radius: 5px ;
+    border-radius: 10px ;
     margin-top: 10px;
     /* width: 20vw; */
-    padding: 10px;
+    padding: 10px 20px;
     cursor: pointer;
+}
+.submit:hover{
+    background-color: rgb(201, 201, 201);
 }
 h1{
     margin-top: 30px;
 }
 .card{
     overflow: hidden;
-    margin-top: 30px;
+    margin: 30px 0;
     width: 50vw;
-    height: 20vw;
+    height: 15vw;
     /* background-color: seagreen; */
     display: flex;
     justify-content: space-around;
     line-height: 2rem;
-    border-radius: 5px;
+    border-radius: 15px;
 }
 .meteo{
     width: 40%;
-    height: 50%;
+    height: 100%;
     background-color: rgb(73, 81, 130);
     display: flex;
     flex-direction: column;
@@ -76,7 +81,7 @@ h1{
 }
 .description{
     width: 60%;
-    height: 50%;
+    height: 100%;
     background-color: rgb(18, 122, 154);
     display: flex;
     flex-direction: column;
@@ -90,7 +95,6 @@ h1{
     /* background-color: darkcyan; */
     overflow: hidden;
     display: flex;
-    overflow-x: scroll;
     justify-content: start;
 }
 .cardDay{
@@ -103,8 +107,12 @@ h1{
     height: 100%;
     border: solid 1px;
 }
+#week .cardDay{
+    width: 8.25vw;
+
+}
 #today{
-    width: 50vw;
+    width: 60vw;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -127,10 +135,10 @@ h1{
     height: 130px;
     /* overflow: hidden; */
     display: flex;
-    overflow-x: scroll;
+  
 }
 #week{
-    width: 50vw;
+    width: 60vw;
     height: auto;
     margin-top: 20px;
     display: flex;
@@ -191,7 +199,7 @@ h1{
         /* width: 80%; */
         /* height: 25px; */
         height: 80px;
-
+        overflow-x: scroll;
     }
     .dayWeather.logo{
         width: 30px;
@@ -213,13 +221,24 @@ h1{
         /* min-width: 600px; */
         /* width: 100%; */
         align-items: center;
+        overflow-x: scroll;
     }
     #week{
         width: 80vw;
         /* background-color: brown; */
     
     }
+    #week .cardDay{
+        width: 60px;
+    
+    }
+    
+    /* Input  */
     .inputAdresse{
-
+        width: 50vw;
+        font-size: 4vw;
+    }
+    .submit{
+        font-size: 4vw;
     }
 }
