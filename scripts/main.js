@@ -38,7 +38,7 @@ if (navigator.geolocation){
     //  console.dir(lat)
     title.innerText = `${lat} et ${lon}`
       console.dir(position)
-      //start()
+      start()
       },
       ()=>alert("Vous avez désactivé la geolocalisation, vous ne pourrez pas utiliser la position de votre appareil")
        )
