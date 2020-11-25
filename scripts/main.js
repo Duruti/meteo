@@ -43,11 +43,12 @@ function searchMap(city){
       lat = d.geometry.coordinates[1];
       lon = d.geometry.coordinates[0];
       title.innerText= `Météo à ${nameCity}`
-      console.log(data)
+      console.log("Ville :")
+      console.dir(data)
       console.log(`
       ${nameCity}, departement ${cityContext}, avec ${population} habitants
       `)
-     // connect();
+      connect();
    })
    .catch(error =>{
       console.log('Il y a eu un problème avec l\'opération fetch: ' + error.message);
@@ -80,6 +81,7 @@ function connect(){
 }
 function today(hourly){
    let today = document.querySelector('.today')
+   today.innerHTML = ""
    let time = hours
    const stepHour = 3
    for (let i=0 ; i<(24) ;i+=stepHour){
@@ -103,6 +105,7 @@ function today(hourly){
 
 function initDays(daily){
    let days = document.querySelector('.days')
+   days.innerHTML = ""
    day += 1;
    if (day>6) day=0;
    for (let i=1 ; i<8 ;i++){
