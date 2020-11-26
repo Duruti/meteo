@@ -80,10 +80,11 @@ function searchGPS(pLon,pLat){
       ${nameCity}, departement ${cityContext}, avec ${population} habitants
       `)
       connect();
+      isOK=true;
    })
    .catch(error =>{
       console.log('Il y a eu un putain problème avec l\'opération fetch: ' + error.message);
-      title.innerText= `Error`
+      title.innerText= `Searching`
       angle += Math.PI/4
       if (angle>(2*Math.PI)) {
          angle = 0;
