@@ -19,6 +19,7 @@ let dataMeteo
 
 let input = document.querySelector('.inputAdresse')
 let title = document.querySelector('.title')
+let title2 = document.querySelector('.title2')
 let form = document.querySelector('#form')
 let nameCity ="";
 let population,cityContext
@@ -33,12 +34,12 @@ form.addEventListener('submit',(e)=>{
 
 if (navigator.geolocation){
    navigator.geolocation.getCurrentPosition(position =>{
-      //lat = position.coords.latitude;
-     // lon = position.coords.longitude;
+   lat = position.coords.latitude;
+   lon = position.coords.longitude;
     //  console.dir(lat)
     title.innerText = `${lat} et ${lon}`
       console.dir(position)
-     // start()
+     start()
       },
       ()=>alert("Vous avez désactivé la geolocalisation, vous ne pourrez pas utiliser la position de votre appareil")
        )
@@ -46,8 +47,8 @@ if (navigator.geolocation){
 let r = 0.01
 let angle = 0
 let isOK = false
-
-start()
+let nbIteration = 1
+//start()
 function start(){
 
    debug ? init():searchGPS(lon,lat)
@@ -74,24 +75,28 @@ function searchGPS(pLon,pLat){
       population = d.properties.population
       lat = d.geometry.coordinates[1];
       lon = d.geometry.coordinates[0];
-      title.innerText= `Météo à ${nameCity}`
+      title.innerText= `Météo à ${nameCity}` 
+      title2.innerText = `en ${nbIteration} itération`
       console.log("Ville :")
       console.log(`
       ${nameCity}, departement ${cityContext}, avec ${population} habitants
       `)
+      console.dir(data)
       connect();
       isOK=true;
    })
    .catch(error =>{
       console.log('Il y a eu un putain problème avec l\'opération fetch: ' + error.message);
       title.innerText= `Searching`
-      angle += Math.PI/4
-      if (angle>(2*Math.PI)) {
-         angle = 0;
-         r += 0.01
-      }
       let x = lon + r*Math.cos(angle)
       let y = lat + r*Math.sin(angle)
+      angle += Math.PI/8 // prend 16 points sur le cercle
+      if (angle>=(2*Math.PI)) {
+         angle = 0;
+         r += 0.01 // augmente de 0.01 le rayon lorsqu'on a fait le tour du cercle
+      }
+      console.log('iteration: '+nbIteration)
+      nbIteration += 1
       searchGPS(x,y)
       // console.dir(error)
    })
