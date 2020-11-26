@@ -3,8 +3,8 @@ let debug = false;
 
 // https://home.openweathermap.org/
 const KEYAPI = '91d441805ebfaedeb9e8e538894bc254';
-let lat = 44.97 //47.50;
-let lon = 3.45 //6.86;
+let lat = 45.017//47.50;
+let lon = 3.472 //0734//9961655236//6.86;
 let date = new Date();
 let day = new Date().getDay();
 const week= ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi']
@@ -33,33 +33,41 @@ form.addEventListener('submit',(e)=>{
 
 if (navigator.geolocation){
    navigator.geolocation.getCurrentPosition(position =>{
-      lat = position.coords.latitude;
-      lon = position.coords.longitude;
+      //lat = position.coords.latitude;
+     // lon = position.coords.longitude;
     //  console.dir(lat)
     title.innerText = `${lat} et ${lon}`
       console.dir(position)
-      start()
+     // start()
       },
       ()=>alert("Vous avez désactivé la geolocalisation, vous ne pourrez pas utiliser la position de votre appareil")
        )
 }
+let r = 0.01
+let angle = 0
+let isOK = false
 
+start()
 function start(){
 
-   debug ? init():searchGPS()
+   debug ? init():searchGPS(lon,lat)
 }
 //connect()
 //
+
 function init(){
    today()
    initDays()
 }
-function searchGPS(){
-  console.log(lon,lat)
-    fetch(`https://api-adresse.data.gouv.fr/reverse/?lon=${lon}&lat=${lat}`)
+function searchGPS(pLon,pLat){
+   console.log(pLon,pLat)
+   if (isOK) return;
+    fetch(`https://api-adresse.data.gouv.fr/reverse/?lon=${pLon}&lat=${pLat}`)
   // fetch("https://api-adresse.data.gouv.fr/reverse/?lon=2.37&lat=48.357")
    .then(r => r.json())
    .then(data =>{
+      console.log("data")
+      console.dir(data)
       let d = data.features[0]
       nameCity = d.properties.city
       cityContext = d.properties.context
@@ -68,7 +76,6 @@ function searchGPS(){
       lon = d.geometry.coordinates[0];
       title.innerText= `Météo à ${nameCity}`
       console.log("Ville :")
-      console.dir(data)
       console.log(`
       ${nameCity}, departement ${cityContext}, avec ${population} habitants
       `)
@@ -77,7 +84,16 @@ function searchGPS(){
    .catch(error =>{
       console.log('Il y a eu un putain problème avec l\'opération fetch: ' + error.message);
       title.innerText= `Error`
-      console.dir(error)})
+      angle += Math.PI/4
+      if (angle>(2*Math.PI)) {
+         angle = 0;
+         r += 0.01
+      }
+      let x = lon + r*Math.cos(angle)
+      let y = lat + r*Math.sin(angle)
+      searchGPS(x,y)
+      // console.dir(error)
+   })
 }
 function searchMap(city){
    fetch(`https://api-adresse.data.gouv.fr/search/?q=${city}`)
