@@ -17,6 +17,14 @@ body {
     align-items: center;
     margin: 20px 0;
 }
+h1{
+    margin-top: 30px;
+}
+h2{
+    font-size: 3vw;
+}
+
+/*  Formulaire */
 #form{
     display: flex;
     flex-direction: column;
@@ -45,12 +53,9 @@ body {
 .submit:hover{
     background-color: rgb(201, 201, 201);
 }
-h1{
-    margin-top: 30px;
-}
-h2{
-    font-size: 3vw;
-}
+
+/* Carte d'info du jour */
+
 .card{
     overflow: hidden;
     margin: 30px 0;
@@ -80,7 +85,7 @@ h2{
     background-image: url('ressources/jour/01d.svg');
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
 }
 .description{
     width: 60%;
@@ -91,15 +96,7 @@ h2{
     align-items: center;
     justify-content: center;
 }
-
-.days{
-    max-width: 100%;
-    height: 130px;
-    /* background-color: darkcyan; */
-    overflow: hidden;
-    display: flex;
-    justify-content: start;
-}
+/* Modele de carte */
 .cardDay{
     flex-shrink: 0;
     display: flex;
@@ -110,35 +107,30 @@ h2{
     height: 100%;
     border: solid 1px;
 }
-#week .cardDay{
-    width: 8.25vw;
 
-}
+/* Infos pour la journée */
 #today{
     width: 60vw;
     height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* border: solid 2px red; */
     overflow: hidden;
     flex-shrink: 0;
-
 }
 #today h2{
     text-align: center;
     margin: 10px 0;
 }
 .today{
-    /* border: solid 2px blue; */
-    /* flex-shrink: 0; */
-   
-    /* margin-top: 20px; */
     max-width: 100%;
     height: 130px;
-    /* overflow: hidden; */
     display: flex;
-  
+}
+
+/* Infos pour la semaine */
+#week .cardDay{
+    width: 8.25vw;
 }
 #week{
     width: 60vw;
@@ -155,21 +147,37 @@ h2{
     margin: 10px;
     text-align: center;
 }
-.dayWeather {
+.days{
+    max-width: 100%;
+    height: 130px;
+    /* background-color: darkcyan; */
+    overflow: hidden;
+    display: flex;
+    justify-content: start;
 }
+
+/* logo pour les minis cartes */
+
 .dayWeather.logo{
     width: 30px;
     height: 30px;
 }
+
+
+/* Responsive */
+
 @media screen and (max-width: 800px){
     h1{
         font-size: 6vw;
-
+        
     }
     h2{ font-size: 5vw;}
     p{
         font-size: 4vw;
         line-height: 1.4;
+    }
+    .logo{
+        width: 30vw;
     }
     .card{
         flex-direction: column;
@@ -189,30 +197,19 @@ h2{
     }
     .cardDay{
         width: 60px;
-        /* height: 250px; */
-
     }
     .description{
-        /* height: 300px; */
         height: 50%;
         width: 100%;
-        /* height: 40vw; */
     }
     .days{
         font-size: 10px;
-        /* width: 80%; */
-        /* height: 25px; */
         height: 80px;
         overflow-x: scroll;
     }
     .dayWeather.logo{
         width: 30px;
         height: 30px;
-    }
-    
-    .logo{
-       /* height: 30vw; */
-       width: 40vw;
     }
     #today{
         width: 80vw;
@@ -229,12 +226,9 @@ h2{
     }
     #week{
         width: 80vw;
-        /* background-color: brown; */
-    
     }
     #week .cardDay{
         width: 60px;
-    
     }
     
     /* Input  */
